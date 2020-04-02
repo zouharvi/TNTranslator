@@ -25,18 +25,16 @@
         <div id='areas_inout'>
             <textarea id='area_input' placeholder="Input text in English."></textarea>
             <textarea id='area_output' placeholder="Output text in Czech." style='margin-top: 20px;' disabled></textarea>
+            <!-- <div class='bread' style='float: right;'>
+                <div class='breadcrumb breadcrumb_blank'>Available</div>
+                <div class='breadcrumb breadcrumb_must'>Must</div>
+                <div class='breadcrumb breadcrumb_forbid'>Forbidden</div>
+            </div> -->
         </div>
-        <div style='vertical-align: top; display: inline-block'>
+        <div style='vertical-align: top; display: inline-block; position: relative;'>
             <div id='area_bread'>
-                <div class='bread'>
-                    <div class='breadcrumb breadcrumb_blank'>Text1</div>
-                    <div class='breadcrumb breadcrumb_blank'>Text2</div>
-                </div>
-                <div class='bread'>
-                    <div class='breadcrumb breadcrumb_must'>TextA</div>
-                    <div class='breadcrumb breadcrumb_blank'>TextB</div>
-                </div>
-    
+            </div>
+            <div id='area_bread_overlay' style='display: none;'>
             </div>
         </div>
     </div>
