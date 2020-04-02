@@ -1,0 +1,21 @@
+{
+  "main": "webpack.config.js",
+  "devDependencies": {
+    "@types/jquery": "^3.3.34",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch=true",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zouharvi/translinspect"
+  },
+  "dependencies": {}
+}
+

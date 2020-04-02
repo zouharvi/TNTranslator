@@ -1,0 +1,4 @@
+node_modules/ 
+web/translinspect-web.js 
+*.swp 
+tmp/* 
