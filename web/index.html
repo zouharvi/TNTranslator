@@ -18,15 +18,33 @@
     <link rel='stylesheet' type='text/css' href='css/extra.css?v=0'>
 </head>
 
-<body style='text-align: center;'>
+<body style='text-align: center; margin-bottom: 20px; background-color: #f4f4f4;'>
     <img style='width: 700px; margin-bottom: 90px; margin-top: 40px;' src='img/logo.svg'>
 
-    <div id='areas_both' style='margin-left: auto; margin-right: auto;'>
-        <textarea id='area_input' placeholder="Input text in English."></textarea>
-        <div id='area_output'>
-            Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww Outputwww 
+    <div style='margin-left: auto; margin-right: auto;'>
+        <div id='areas_inout'>
+            <textarea id='area_input' placeholder="Input text in English."></textarea>
+            <textarea id='area_output' placeholder="Output text in Czech." style='margin-top: 20px;' disabled></textarea>
+        </div>
+        <div style='vertical-align: top; display: inline-block'>
+            <div id='area_bread'>
+                <div class='bread'>
+                    <div class='breadcrumb breadcrumb_blank'>Text1</div>
+                    <div class='breadcrumb breadcrumb_blank'>Text2</div>
+                </div>
+                <div class='bread'>
+                    <div class='breadcrumb breadcrumb_must'>TextA</div>
+                    <div class='breadcrumb breadcrumb_blank'>TextB</div>
+                </div>
+    
+            </div>
         </div>
     </div>
+
+    <a href="http://browser.mt" style="position: absolute; right: 10px; bottom: 10px;">
+        <img src="img/bergamot_logo.svg" style="width: 180px;" alt="Bergamot title logo">
+    </a>
+
     <script src='tntranslator-web.js'></script>
 </body>
 </html>
