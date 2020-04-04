@@ -11,7 +11,7 @@ export type Translation = Array<Array<[string, string]>>
  * Template for forward and backward translators
  */
 export class Translator extends AsyncMessage {
-    private throttler = new Throttler(500)
+    private throttler = new Throttler(1000)
 
     /**
      * Make a translator request, which can be later interrupted. 
@@ -33,11 +33,6 @@ export class Translator extends AsyncMessage {
     // Target HTML elements
     public source: JQuery<HTMLElement>
     public target: JQuery<HTMLElement>
-
-    protected running: boolean = true
-    public on(running: boolean = true) {
-        this.running = running
-    }
 
     // Object of available backends and their implementations
     public static backends: { [index: string]: TranslatorBackend } = {
@@ -65,30 +60,18 @@ export class Translator extends AsyncMessage {
                 return new Promise<Translation>(async (resolve, reject) => {
                     await new Promise(resolve => setTimeout(resolve, 1000))
                     // I bought a red sports car, which cost me a lot.
-                    // resolve([
-                    //     [["Koupil", 'blank'], ["Koupila", 'blank']],
-                    //     [["jsem", 'blank'], ["si", 'blank']],
-                    //     [["si", 'blank']],
-                    //     [["červené", 'blank'], ["červený", 'blank'], ["červenou", 'blank']],
-                    //     [["sportovní", 'blank']],
-                    //     [["auto", 'blank'], ["vůz", 'blank'], ["sporťák", 'blank']],
-                    //     [["které", 'blank'], ["který", 'blank'], ["což", 'blank']],
-                    //     [["mě", 'blank'], ["mně", 'blank']],
-                    //     [["stálo", 'blank'], ["stojí", 'blank']],
-                    //     [["hodně", 'blank'], ["dost", 'blank']]
-                    // ])
-                    // resolve([
-                    //     [["Koupil", 'blank'], ["Koupila", 'blank']],
-                    //     [["jsem", 'blank'], ["si", 'blank']],
-                    //     [["si", 'forbid']],
-                    //     [["červené", 'blank'], ["červený", 'blank'], ["červenou", 'blank']],
-                    //     [["sportovní", 'blank']],
-                    //     [["auto", 'blank'], ["vůz", 'blank'], ["sporťák", 'blank']],
-                    //     [["které", 'blank'], ["který", 'blank'], ["což", 'blank']],
-                    //     [["mě", 'blank'], ["mně", 'blank']],
-                    //     [["stálo", 'blank'], ["stojí", 'blank']],
-                    //     [["hodně", 'blank'], ["dost", 'blank']]
-                    // ])
+                    resolve([
+                        [["Koupil", 'blank'], ["Koupila", 'blank']],
+                        [["jsem", 'blank'], ["si", 'blank']],
+                        [["si", 'blank']],
+                        [["červené", 'blank'], ["červený", 'blank'], ["červenou", 'blank']],
+                        [["sportovní", 'blank']],
+                        [["auto", 'blank'], ["vůz", 'blank'], ["sporťák", 'blank']],
+                        [["které", 'blank'], ["který", 'blank'], ["což", 'blank']],
+                        [["mě", 'blank'], ["mně", 'blank']],
+                        [["stálo", 'blank'], ["stojí", 'blank']],
+                        [["hodně", 'blank'], ["dost", 'blank']]
+                    ])
                 })
             },
             name: 'Fake Local',
@@ -96,9 +79,6 @@ export class Translator extends AsyncMessage {
     }
 
     public translate = () => {
-        if (!this.running)
-            return
-        
         bread_manager.lock(true)
         let request = Settings.backendTranslator.composeRequest(
             $(this.source).val() as string,
@@ -106,25 +86,29 @@ export class Translator extends AsyncMessage {
             Settings.language2 as LanguageCode)
 
         request.then((translation: Translation) => {
-            let curTranslationText = ''
-            for(let breadline of translation) {
-                let isChosen = breadline.some((x) => x[1] == 'must')
-                let available = breadline
-                if(isChosen) {
-                    available = available.filter((x) => x[1] == 'must')
-                } else {
-                    available = available.filter((x) => x[1] != 'forbid')
-                }
-                if (available.length != 0) {
-                    curTranslationText += available[0][0] + ' '
-                }
-            }
-            $(this.target).val(curTranslationText)
+            this.displayTranslationText(translation)
             bread_manager.instantiate(translation)
             bread_manager.lock(false)
         })
 
         super.dispatch(request)
+    }
+
+    public displayTranslationText(translation: Translation) {
+        let curTranslationText = ''
+        for (let breadline of translation) {
+            let isChosen = breadline.some((x) => x[1] == 'must')
+            let available = breadline
+            if (isChosen) {
+                available = available.filter((x) => x[1] == 'must')
+            } else {
+                available = available.filter((x) => x[1] != 'forbid')
+            }
+            if (available.length != 0) {
+                curTranslationText += available[0][0] + ' '
+            }
+        }
+        $(this.target).val(curTranslationText)
     }
 
     public clean = () => {

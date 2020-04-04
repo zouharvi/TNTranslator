@@ -12,17 +12,18 @@
     resize: none;
     height: 160px;
     font-size: 1.8em;
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.25); 
-    border-radius: 3px;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.25); 
+    border-radius: 2px;
     border: none;
     outline: none;
+    padding: 6px;
 }
 
 #area_bread, #area_bread_overlay {
     width: 600px;
     margin-left: 20px;
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.25); 
-    border-radius: 3px;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.25); 
+    border-radius: 2px;
     padding: 5px;
     min-height: 20px;
 }
@@ -41,11 +42,12 @@
     vertical-align: top;
     width: 500px;
     margin-bottom: 20px;
+    margin-right: 15px;
 }
 
 .breadcrumb {
     display: inline-block;
-    border-radius: 3px;
+    border-radius: 2px;
     box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5); 
     padding: 4px;
     user-select: none;
