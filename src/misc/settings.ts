@@ -1,5 +1,4 @@
 import { TranslatorBackend } from '../messages/translator'
-import { BreadTranslatorBackend } from '../messages/bread_translator'
 import { LanguageCode } from "./utils"
 
 /**
@@ -7,7 +6,6 @@ import { LanguageCode } from "./utils"
  */
 export class Settings {
     public static backendTranslator: TranslatorBackend
-    public static backendBreadTranslator: BreadTranslatorBackend
     public static language1?: LanguageCode = 'en'
     public static language2?: LanguageCode = 'cs'
 }

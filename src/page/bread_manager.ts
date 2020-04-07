@@ -1,15 +1,11 @@
-import { Translation } from '../messages/translator'
-import { translator_bread } from '../messages/bread_translator'
+import { Translation, translator_source } from '../messages/translator'
 
 export type BreadcrumbType = 'blank' | 'must' | 'forbid'
 
-// export type Bread = Array<Array<Breadcrumb>>
-// export class Breadcrumb {
-//     public constructor(private row: number, private column: number) {}
-// }
-
 export class BreadManager {
     public bread : Translation = []
+    public tokensMust : Set<string> = new Set<string>()
+    public tokensForbid : Set<string> = new Set<string>()
 
     public constructor(private area_bread: JQuery<HTMLElement>, private area_bread_overlay: JQuery<HTMLElement>) {
 
@@ -22,44 +18,60 @@ export class BreadManager {
 
         let toAdd: string = ''
         for (let i in translation) {
-            let breadline = translation[i]
+            let breadslice = translation[i]
             let breadString = '<div class="bread">'
-            let breadArrayLine = []
-            for (let j in breadline) {
-                let breadcrumb = breadline[j]
-                breadArrayLine.push(breadcrumb)
-                breadString += `<div row='${i}' column='${j}'onclick='breadcrumbClick(this)' class='breadcrumb breadcrumb_${breadcrumb[1]}'>`
-                breadString += breadcrumb[0]
+            let breadsliceArray = []
+            for (let j in breadslice) {
+                let breadcrumb = breadslice[j]
+                breadsliceArray.push(breadcrumb)
+                let state = 'blank'
+                if (this.tokensMust.has(breadcrumb)) {
+                    state = 'must'
+                } else if(this.tokensForbid.has(breadcrumb)) {
+                    state = 'forbid'
+                }
+                breadString += `<div row='${i}' column='${j}'onclick='breadcrumbClick(this)' class='breadcrumb breadcrumb_${state}'>`
+                breadString += breadcrumb
                 breadString += "</div>"
             }
             // input
-            // breadString += "<div row='" + i + "' column='" + breadline.length + "'onclick='breadcrumbInput(this)' class='breadcrumb breadcrumb_input'>"
+            // breadString += "<div row='" + i + "' column='" + breadslice.length + "'onclick='breadcrumbInput(this)' class='breadcrumb breadcrumb_input'>"
             breadString += '</div>'
             toAdd += breadString
-            this.bread.push(breadArrayLine)
+            this.bread.push(breadsliceArray)
         }
         this.area_bread.html(toAdd)
+    }
+
+    public clean() {
+        this.tokensForbid = new Set<string>()
+        this.tokensMust = new Set<string>()
     }
 
     public breadcrumbClick(helement: HTMLElement) {
         let element = $(helement)
         let column = Number(element.attr('column'))
         let row = Number(element.attr('row'))
+        let text = element.text()
+        console.log(text)
 
         if (element.hasClass('breadcrumb_blank')) {
             element.removeClass('breadcrumb_blank')
             element.addClass('breadcrumb_must')
-            bread_manager.bread[row][column][1] = 'must'
+            bread_manager.tokensMust.add(text)
+            bread_manager.tokensForbid.delete(text)
         } else if (element.hasClass('breadcrumb_must')) {
             element.removeClass('breadcrumb_must')
             element.addClass('breadcrumb_forbid')
-            bread_manager.bread[row][column][1] = 'forbid'
+            bread_manager.tokensMust.delete(text)
+            bread_manager.tokensForbid.add(text)
         } else if (element.hasClass('breadcrumb_forbid')) {
             element.removeClass('breadcrumb_forbid')
             element.addClass('breadcrumb_blank')
-            bread_manager.bread[row][column][1] = 'blank'
+            bread_manager.tokensMust.delete(text)
+            bread_manager.tokensForbid.delete(text)
         }
-        translator_bread.translate_throttle()
+        translator_source.translate_throttle()
     }
 
     public lock(lock: boolean) {

@@ -5,7 +5,9 @@ import { Settings } from '../misc/settings'
 import { IndicatorManager } from "../page/indicator_manager"
 import { bread_manager } from '../page/bread_manager'
 
-export type Translation = Array<Array<[string, string]>>
+export type Translation = Array<Array<string>>
+
+var TMP_FAKE_COUNTER: number = -1
 
 /**
  * Template for forward and backward translators
@@ -38,7 +40,7 @@ export class Translator extends AsyncMessage {
     public static backends: { [index: string]: TranslatorBackend } = {
         // This won't work, because Lindat does not provide n-best list
         ufalTransformer: {
-            composeRequest(text: string, sourceLang: LanguageCode, targetLang: LanguageCode): Promise<Translation> {
+            composeRequest(text: string, must: Set<string>, forbid: Set<string>, sourceLang: LanguageCode, targetLang: LanguageCode): Promise<Translation> {
                 return new Promise<Translation>((resolve, reject) => {
                     $.ajax({
                         type: "POST",
@@ -56,22 +58,65 @@ export class Translator extends AsyncMessage {
             name: 'ÚFAL Translation',
         },
         fakeLocal: {
-            composeRequest(text: string, sourceLang: LanguageCode, targetLang: LanguageCode): Promise<Translation> {
+            composeRequest(text: string, must: Set<string>, forbid: Set<string>, sourceLang: LanguageCode, targetLang: LanguageCode): Promise<Translation> {
                 return new Promise<Translation>(async (resolve, reject) => {
-                    await new Promise(resolve => setTimeout(resolve, 1000))
+                    await new Promise(resolve => setTimeout(resolve, 300))
+
                     // I bought a red sports car, which cost me a lot.
-                    resolve([
-                        [["Koupil", 'blank'], ["Koupila", 'blank']],
-                        [["jsem", 'blank'], ["si", 'blank']],
-                        [["si", 'blank']],
-                        [["červené", 'blank'], ["červený", 'blank'], ["červenou", 'blank']],
-                        [["sportovní", 'blank']],
-                        [["auto", 'blank'], ["vůz", 'blank'], ["sporťák", 'blank']],
-                        [["které", 'blank'], ["který", 'blank'], ["což", 'blank']],
-                        [["mě", 'blank'], ["mně", 'blank']],
-                        [["stálo", 'blank'], ["stojí", 'blank']],
-                        [["hodně", 'blank'], ["dost", 'blank']]
-                    ])
+                    TMP_FAKE_COUNTER += 1
+                    if (TMP_FAKE_COUNTER == 0) {
+                        resolve([
+                            ["Koupil", "Koupila"],
+                            ["jsem", "si"],
+                            ["si"], // change
+                            ["červené", "červený", "červenou"],
+                            ["sportovní"],
+                            ["auto", "vůz", "sporťák"],
+                            ["které", "který", "což"],
+                            ["mě", "mně"],
+                            ["stálo", "stojí"],
+                            ["hodně", "dost"]
+                        ])
+                    } else if (TMP_FAKE_COUNTER == 1) {
+                        resolve([
+                            ["Koupil", "Koupila"],
+                            ["jsem", "si"],
+                            // ["si"], // change
+                            ["červené", "červený", "červenou"],
+                            ["sportovní"],
+                            ["sporťák"],
+                            ["které", "který", "což"],
+                            ["mě", "mně"],
+                            ["stál", "stojí"],
+                            ["hodně", "dost"]
+                        ])
+                    } else if (TMP_FAKE_COUNTER == 2) {
+                        resolve([
+                            ["Koupil", "Koupila"],
+                            ["jsem", "si"],
+                            // ["si"], // change
+                            ["červené", "červený", "červenou"],
+                            // ["sportovní"],
+                            ["sporťák"],
+                            ["který", "kterého", "což"], // change
+                            ["mě", "mně"],
+                            ["stál", "stojí"],
+                            ["hodně", "dost"]
+                        ])
+                    } else if (TMP_FAKE_COUNTER == 3) {
+                        resolve([
+                            ["Koupil", "Koupila"],
+                            ["jsem", "si"],
+                            // ["si"], // change
+                            ["červené", "červený", "červenou"],
+                            // ["sportovní"],
+                            ["sporťák"],
+                            ["který", "kterého", "což"], // change
+                            ["mě", "mně"],
+                            ["stál", "stojí"],
+                            ["dost"] // change
+                        ])
+                    }
                 })
             },
             name: 'Fake Local',
@@ -82,6 +127,8 @@ export class Translator extends AsyncMessage {
         bread_manager.lock(true)
         let request = Settings.backendTranslator.composeRequest(
             $(this.source).val() as string,
+            bread_manager.tokensMust,
+            bread_manager.tokensForbid,
             Settings.language1 as LanguageCode,
             Settings.language2 as LanguageCode)
 
@@ -96,17 +143,8 @@ export class Translator extends AsyncMessage {
 
     public displayTranslationText(translation: Translation) {
         let curTranslationText = ''
-        for (let breadline of translation) {
-            let isChosen = breadline.some((x) => x[1] == 'must')
-            let available = breadline
-            if (isChosen) {
-                available = available.filter((x) => x[1] == 'must')
-            } else {
-                available = available.filter((x) => x[1] != 'forbid')
-            }
-            if (available.length != 0) {
-                curTranslationText += available[0][0] + ' '
-            }
+        for (let breadslice of translation) {
+            curTranslationText += breadslice[0] + ' '
         }
         $(this.target).val(curTranslationText)
     }
@@ -119,7 +157,7 @@ export class Translator extends AsyncMessage {
 
 export interface TranslatorBackend {
     // Return a finished promise settings object, which can later be resolved
-    composeRequest: (text: string, sourceLang: LanguageCode, targetLang: LanguageCode) => Promise<Translation>,
+    composeRequest: (text: string, must: Set<string>, forbid: Set<string>, sourceLang: LanguageCode, targetLang: LanguageCode) => Promise<Translation>,
 
     // Proper backend name (not key)
     name: string,
