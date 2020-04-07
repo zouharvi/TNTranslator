@@ -127,8 +127,8 @@ export class Translator extends AsyncMessage {
         bread_manager.lock(true)
         let request = Settings.backendTranslator.composeRequest(
             $(this.source).val() as string,
-            bread_manager.tokensMust,
-            bread_manager.tokensForbid,
+            bread_manager.globalMust,
+            bread_manager.globalForbid,
             Settings.language1 as LanguageCode,
             Settings.language2 as LanguageCode)
 
