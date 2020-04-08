@@ -20,17 +20,12 @@
 <body style='text-align: center; margin-bottom: 20px; background-color: #f4f4f4;'>
     <img style='width: 700px; margin-bottom: 90px; margin-top: 40px;' src='img/logo.svg'>
 
-    <div style='margin-left: auto; margin-right: auto;'>
-        <div id='areas_inout'>
-            <textarea id='area_input' placeholder="Input text in English."></textarea>
-            <textarea id='area_output' placeholder="Output text in Czech." style='margin-top: 25px;' disabled></textarea>
-            <!-- <div class='bread' style='float: right;'>
-                <div class='breadcrumb breadcrumb_blank'>Available</div>
-                <div class='breadcrumb breadcrumb_must'>Must</div>
-                <div class='breadcrumb breadcrumb_forbid'>Forbidden</div>
-            </div> -->
+    <div style='margin-left: auto; margin-right: auto; width: 1000px; text-align: center;'>
+        <div id='div_inout'>
+            <textarea id='area_input' placeholder="Input text in English." style='margin-right: 10px;'></textarea>
+            <textarea id='area_output' placeholder="Output text in Czech." style='margin-left: 10px;' readonly></textarea>
         </div>
-        <div style='vertical-align: top; display: inline-block; position: relative; margin-left: 20px;'>
+        <div id='div_bread' style='display: none;'>
             <div id='area_bread'></div>
             <div id='area_bread_must' style='display: none;'></div>
             <div id='area_bread_forbid' style='display: none;'></div>

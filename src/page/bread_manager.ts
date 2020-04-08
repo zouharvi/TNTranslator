@@ -3,11 +3,11 @@ import { Translation, translator_source } from '../messages/translator'
 export type BreadcrumbType = 'blank' | 'must' | 'forbid'
 
 export class BreadManager {
-    public bread: Translation = []
     public globalMust: Set<string> = new Set<string>()
     public globalForbid: Set<string> = new Set<string>()
 
     public constructor(
+        private div_bread: JQuery<HTMLElement>,
         private area_bread: JQuery<HTMLElement>,
         private area_bread_overlay: JQuery<HTMLElement>,
         private global_tokens_must: JQuery<HTMLElement>,
@@ -27,18 +27,21 @@ export class BreadManager {
             this.lastTranslation = translation
         }
 
+        if(translation.length != 0) {
+            this.div_bread.show()
+        } else {
+            this.div_bread.hide()
+        }
+
         // clean
         this.area_bread.html('')
-        this.bread = []
 
         let toAdd: string = ''
-        for (let i in translation) {
-            let breadslice = translation[i]
+        for (let sI in translation) {
+            let sentence = translation[sI]
             let breadString = '<div class="bread">'
-            let breadsliceArray = []
-            for (let j in breadslice) {
-                let breadcrumb = breadslice[j]
-                breadsliceArray.push(breadcrumb)
+            for (let j in sentence.tokens) {
+                let breadcrumb = sentence.tokens[j]
                 let state = 'blank'
                 if (this.globalMust.has(breadcrumb)) {
                     state = 'must'
@@ -53,7 +56,6 @@ export class BreadManager {
             // breadString += "<div row='" + i + "' column='" + breadslice.length + "'onclick='breadcrumbInput(this)' class='breadcrumb breadcrumb_input'>"
             breadString += '</div>'
             toAdd += breadString
-            this.bread.push(breadsliceArray)
         }
         this.area_bread.html(toAdd)
     }
@@ -64,7 +66,7 @@ export class BreadManager {
             $(this.global_tokens_must).html()
         } else {
             $(this.global_tokens_must).show()
-            let outputHTML = ''
+            let outputHTML = `<div class="breadcrumb_global_text">Must contain:</div>`
             for (let breadcrumb of this.globalMust) {
                 outputHTML += `<div onclick='breadcrumbGlobalClick(this)' class='breadcrumb breadcrumb_must'>${breadcrumb}</div>`
             }
@@ -133,7 +135,12 @@ export class BreadManager {
     }
 }
 
-let bread_manager = new BreadManager($('#area_bread'), $('#area_bread_overlay'), $('#area_bread_must'), $('#area_bread_forbid'));
+let bread_manager = new BreadManager(
+    $('#div_bread'),
+    $('#area_bread'),
+    $('#area_bread_overlay'),
+    $('#area_bread_must'),
+    $('#area_bread_forbid'));
 
 (window as any).breadcrumbClick = bread_manager.breadcrumbClick;
 (window as any).breadcrumbGlobalClick = bread_manager.breadcrumbGlobalClick;

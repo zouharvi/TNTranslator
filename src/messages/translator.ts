@@ -5,7 +5,8 @@ import { Settings } from '../misc/settings'
 import { IndicatorManager } from "../page/indicator_manager"
 import { bread_manager } from '../page/bread_manager'
 
-export type Translation = Array<Array<string>>
+// export type Translation = Array<Array<string>>
+export type Translation = Array<{ text: string, tokens: Array<string>, score: number }>
 
 var TMP_FAKE_COUNTER: number = -1
 
@@ -65,57 +66,21 @@ export class Translator extends AsyncMessage {
                     // I bought a red sports car, which cost me a lot.
                     TMP_FAKE_COUNTER += 1
                     if (TMP_FAKE_COUNTER == 0) {
-                        resolve([
-                            ["Koupil", "Koupila"],
-                            ["jsem", "si"],
-                            ["si"], // change
-                            ["červené", "červený", "červenou"],
-                            ["sportovní"],
-                            ["auto", "vůz", "sporťák"],
-                            ["které", "který", "což"],
-                            ["mě", "mně"],
-                            ["stálo", "stojí"],
-                            ["hodně", "dost"]
-                        ])
+                        resolve([{
+                            text: "Koupila jsem si červené sportovní auto které mě stálo hodně",
+                            tokens: ["Koupila", "jsem", "si", "červené", "sportovní", "auto", "které", "mě", "stálo", "hodně"],
+                            score: 0.5
+                        }])
                     } else if (TMP_FAKE_COUNTER == 1) {
-                        resolve([
-                            ["Koupil", "Koupila"],
-                            ["jsem", "si"],
-                            // ["si"], // change
-                            ["červené", "červený", "červenou"],
-                            ["sportovní"],
-                            ["sporťák"],
-                            ["které", "který", "což"],
-                            ["mě", "mně"],
-                            ["stál", "stojí"],
-                            ["hodně", "dost"]
-                        ])
+                        resolve([{
+                            text: "Koupila jsem červené sportovní auto které mě stálo hodně",
+                            tokens: ["Koupila", "jsem", "červené", "sportovní", "auto", "které", "mě", "stálo", "hodně"],
+                            score: 0.5
+                        }])
                     } else if (TMP_FAKE_COUNTER == 2) {
-                        resolve([
-                            ["Koupil", "Koupila"],
-                            ["jsem", "si"],
-                            // ["si"], // change
-                            ["červené", "červený", "červenou"],
-                            // ["sportovní"],
-                            ["sporťák"],
-                            ["který", "kterého", "což"], // change
-                            ["mě", "mně"],
-                            ["stál", "stojí"],
-                            ["hodně", "dost"]
-                        ])
+                        resolve([])
                     } else if (TMP_FAKE_COUNTER == 3) {
-                        resolve([
-                            ["Koupil", "Koupila"],
-                            ["jsem", "si"],
-                            // ["si"], // change
-                            ["červené", "červený", "červenou"],
-                            // ["sportovní"],
-                            ["sporťák"],
-                            ["který", "kterého", "což"], // change
-                            ["mě", "mně"],
-                            ["stál", "stojí"],
-                            ["dost"] // change
-                        ])
+                        resolve([])
                     }
                 })
             },
@@ -142,11 +107,12 @@ export class Translator extends AsyncMessage {
     }
 
     public displayTranslationText(translation: Translation) {
-        let curTranslationText = ''
-        for (let breadslice of translation) {
-            curTranslationText += breadslice[0] + ' '
+        if(translation.length == 0) {
+            $(this.target).val('')
+        } else {
+            $(this.target).val(translation[0].text)
         }
-        $(this.target).val(curTranslationText)
+
     }
 
     public clean = () => {
