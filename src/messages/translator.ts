@@ -71,16 +71,12 @@ export class Translator extends AsyncMessage {
                             tokens: ["Koupila", "jsem", "si", "červené", "sportovní", "auto", "které", "mě", "stálo", "hodně"],
                             score: 0.5
                         }])
-                    } else if (TMP_FAKE_COUNTER == 1) {
+                    } else if (TMP_FAKE_COUNTER >= 1) {
                         resolve([{
                             text: "Koupila jsem červené sportovní auto které mě stálo hodně",
                             tokens: ["Koupila", "jsem", "červené", "sportovní", "auto", "které", "mě", "stálo", "hodně"],
                             score: 0.5
                         }])
-                    } else if (TMP_FAKE_COUNTER == 2) {
-                        resolve([])
-                    } else if (TMP_FAKE_COUNTER == 3) {
-                        resolve([])
                     }
                 })
             },

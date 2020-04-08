@@ -27,8 +27,22 @@
         </div>
         <div id='div_bread' style='display: none;'>
             <div id='area_bread'></div>
-            <div id='area_bread_must' style='display: none;'></div>
-            <div id='area_bread_forbid' style='display: none;'></div>
+            <div id='area_bread_must' style='display: none;'>
+                <div class="breadcrumb_global_text">Must contain:</div>
+                <div id='area_bread_must_in' style='display: inline-block;'></div>
+                <div id='breadcrumb_global_must_form' style='display: inline-block;'>
+                    <input id='breadcrumb_global_must_input' type='text'>
+                    <input id='breadcrumb_global_must_add' type='button' value='↵'>
+                </div>
+            </div>
+            <div id='area_bread_forbid' style='display: none;'>
+                <div class="breadcrumb_global_text">Forbid:</div>
+                <div id='area_bread_forbid_in' style='display: inline-block;'></div>
+                <div id='breadcrumb_global_forbid_form' style='display: inline-block;'>
+                    <input id='breadcrumb_global_forbid_input' type='text'>
+                    <input id='breadcrumb_global_forbid_add' type='button' value='↵'>
+                </div>
+            </div>
             <div id='area_bread_overlay' style='display: none;'>
             </div>
         </div>
