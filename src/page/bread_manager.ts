@@ -78,7 +78,7 @@ export class BreadManager {
             $(this.global_tokens_forbid).html()
         } else {
             $(this.global_tokens_forbid).show()
-            let outputHTML = ''
+            let outputHTML = `<div class="breadcrumb_global_text">Forbid:</div>`
             for (let breadcrumb of this.globalForbid) {
                 outputHTML += `<div onclick='breadcrumbGlobalClick(this)' class='breadcrumb breadcrumb_forbid'>${breadcrumb}</div>`
             }
