@@ -63,10 +63,10 @@ export class BreadManager {
 
     public updateGlobalBreadslice() {
         if (this.globalMust.size == 0) {
-            $(this.global_tokens_must).hide()
+            // $(this.global_tokens_must).hide()
             $(this.global_tokens_must).html()
         } else {
-            $(this.global_tokens_must).show()
+            // $(this.global_tokens_must).show()
             let outputHTML = ''
             for (let breadcrumb of this.globalMust) {
                 outputHTML += `<div onclick='breadcrumbGlobalClick(this)' class='breadcrumb breadcrumb_must'>${breadcrumb}</div>`
@@ -75,10 +75,10 @@ export class BreadManager {
         }
 
         if (this.globalForbid.size == 0) {
-            $(this.global_tokens_forbid).hide()
+            // $(this.global_tokens_forbid).hide()
             $(this.global_tokens_forbid).html()
         } else {
-            $(this.global_tokens_forbid).show()
+            // $(this.global_tokens_forbid).show()
             let outputHTML = ''
             for (let breadcrumb of this.globalForbid) {
                 outputHTML += `<div onclick='breadcrumbGlobalClick(this)' class='breadcrumb breadcrumb_forbid'>${breadcrumb}</div>`

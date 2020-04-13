@@ -65,17 +65,16 @@ export class Translator extends AsyncMessage {
 
                     // I bought a red sports car, which cost me a lot.
                     TMP_FAKE_COUNTER += 1
-                    if (TMP_FAKE_COUNTER == 0) {
+                    if (TMP_FAKE_COUNTER >= 0) {
                         resolve([{
                             text: "Koupila jsem si červené sportovní auto které mě stálo hodně",
                             tokens: ["Koupila", "jsem", "si", "červené", "sportovní", "auto", "které", "mě", "stálo", "hodně"],
                             score: 0.5
-                        }])
-                    } else if (TMP_FAKE_COUNTER >= 1) {
-                        resolve([{
-                            text: "Koupila jsem červené sportovní auto které mě stálo hodně",
-                            tokens: ["Koupila", "jsem", "červené", "sportovní", "auto", "které", "mě", "stálo", "hodně"],
-                            score: 0.5
+                        },
+                        {
+                            text: "Koupil jsem si červený sportovní auto které mě stálo dost",
+                            tokens: ["Koupil", "jsem", "si", "červené", "sportovní", "auto", "které", "mě", "stálo", "dost"],
+                            score: 0.4
                         }])
                     }
                 })

@@ -120,7 +120,7 @@
 #breadcrumb_global_must_add,
 #breadcrumb_global_forbid_add {
     font-size: 1.3em;
-    display: none;
+    /* display: none; */
 }
 
 #area_bread_must_in,
