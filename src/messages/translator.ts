@@ -39,17 +39,15 @@ export class Translator extends AsyncMessage {
 
     // Object of available backends and their implementations
     public static backends: { [index: string]: TranslatorBackend } = {
-        // This won't work, because Lindat does not provide n-best list
-        ufalTransformer: {
+        sockEye: {
             composeRequest(text: string, must: Set<string>, forbid: Set<string>, sourceLang: LanguageCode, targetLang: LanguageCode): Promise<Translation> {
                 return new Promise<Translation>((resolve, reject) => {
                     $.ajax({
                         type: "POST",
-                        url: "https://lindat.mff.cuni.cz/services/transformer/api/v2/languages/",
-                        headers: {
-                            Accept: "application/json",
-                        },
-                        data: { src: sourceLang, tgt: targetLang, input_text: text },
+                        contentType: "application/json",
+                        url: "https://quest.ms.mff.cuni.cz/ptakopet-mt280/paraphrase/en",
+                        crossDomain: true,
+                        data: JSON.stringify({ text: text, must: Array.from(must), forbid: Array.from(forbid) }),
                         async: true,
                     })
                         .done((data: Translation) => resolve(data))
@@ -102,7 +100,7 @@ export class Translator extends AsyncMessage {
     }
 
     public displayTranslationText(translation: Translation) {
-        if(translation.length == 0) {
+        if (translation.length == 0) {
             $(this.target).val('')
         } else {
             $(this.target).val(translation[0].text)

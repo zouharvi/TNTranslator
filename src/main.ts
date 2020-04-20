@@ -12,4 +12,4 @@ $('#area_input').on('input', function () {
 $('#area_input').val('I bought a red sports car, which cost me a lot.')
 $('#area_input').trigger('input')
 
-Settings.backendTranslator = Translator.backends.fakeLocal
+Settings.backendTranslator = Translator.backends.sockEye
