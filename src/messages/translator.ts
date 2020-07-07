@@ -45,7 +45,7 @@ export class Translator extends AsyncMessage {
                     $.ajax({
                         type: "POST",
                         contentType: "application/json",
-                        url: "https://quest.ms.mff.cuni.cz/ptakopet-mt280/paraphrase/en",
+                        url: "https://quest.ms.mff.cuni.cz/bergamot180/paraphrase/en",
                         crossDomain: true,
                         data: JSON.stringify({ text: text, must: Array.from(must), forbid: Array.from(forbid) }),
                         async: true,
@@ -90,13 +90,11 @@ export class Translator extends AsyncMessage {
             Settings.language1 as LanguageCode,
             Settings.language2 as LanguageCode)
 
-        request.then((translation: Translation) => {
+        super.dispatch(request, (translation: Translation) => {
             this.displayTranslationText(translation)
             bread_manager.instantiate(translation)
             bread_manager.lock(false)
         })
-
-        super.dispatch(request)
     }
 
     public displayTranslationText(translation: Translation) {
