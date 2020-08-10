@@ -132,3 +132,7 @@
 #breadcrumb_global_forbid_form {
     /* margin-left: 0px; */
 }
+
+div .globalMust.breadcrumb {
+    background-color: #dadada;
+}

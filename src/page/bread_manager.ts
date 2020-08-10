@@ -49,7 +49,12 @@ export class BreadManager {
                 } else if (this.globalForbid.has(breadcrumb)) {
                     state = 'forbid'
                 }
-                breadString += `<div onclick='breadcrumbClick(this)' class='breadcrumb breadcrumb_${state}'>`
+
+                let extraClass = '';
+                if (this.globalMust.has(breadcrumb)) {
+                    extraClass = ' globalMust '
+                }
+                breadString += `<div onclick='breadcrumbClick(this)' class='breadcrumb breadcrumb_${state} ${extraClass}'>`
                 breadString += breadcrumb
                 breadString += "</div>"
             }
