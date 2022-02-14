@@ -63,23 +63,111 @@ export class Translator extends AsyncMessage {
 
                     // I bought a red sports car, which cost me a lot.
                     TMP_FAKE_COUNTER += 1
+                    switch (TMP_FAKE_COUNTER) {
+                        case 0:
+                            resolve([{
+                                text: "Koupila jsem si červené sportovní auto které mě stálo hodně",
+                                tokens: ["Koupila", "jsem", "si", "červené", "sportovní", "auto", "které", "mě", "stálo", "hodně"],
+                                score: 0.5
+                            },
+                            {
+                                text: "Koupil jsem si červený sportovní vůz který mě stál dost",
+                                tokens: ["Koupil", "jsem", "si", "červený", "sportovní", "vůz", "který", "mě", "stál", "dost"],
+                                score: 0.4
+                            }])
+                            break;
+                        case 1:
+                            resolve([{
+                                text: "Koupila jsem červené sportovní auto které mě stálo hodně",
+                                tokens: ["Koupila", "jsem", "červené", "sportovní", "auto", "které", "mě", "stálo", "hodně"],
+                                score: 0.5
+                            },
+                            {
+                                text: "Koupil jsem červený sportovní vůz který mě stál dost",
+                                tokens: ["Koupil", "jsem", "červený", "sportovní", "vůz", "který", "mě", "stál", "dost"],
+                                score: 0.4
+                            }])
+                            break;
+                        case 2:
+                            resolve([{
+                                text: "Koupila jsem červený sporťák který mě stál hodně",
+                                tokens: ["Koupila", "jsem", "sportovní", "sporťák", "který", "mě", "stál", "hodně"],
+                                score: 0.5
+                            },
+                            {
+                                text: "Koupil jsem červený sporťák který mě stál dost",
+                                tokens: ["Koupil", "jsem", "červený", "sporťák", "který", "mě", "stál", "dost"],
+                                score: 0.4
+                            }])
+                            break;
+                        case 3:
+                            resolve([{
+                                text: "Koupil jsem červený sporťák který mě stál hodně",
+                                tokens: ["Koupil", "jsem", "červený", "sporťák", "který", "mě", "stál", "hodně"],
+                                score: 0.4
+                            }])
+                            break;
+                    }
                     if (TMP_FAKE_COUNTER >= 0) {
-                        resolve([{
-                            text: "Koupila jsem si červené sportovní auto které mě stálo hodně",
-                            tokens: ["Koupila", "jsem", "si", "červené", "sportovní", "auto", "které", "mě", "stálo", "hodně"],
-                            score: 0.5
-                        },
-                        {
-                            text: "Koupil jsem si červený sportovní auto které mě stálo dost",
-                            tokens: ["Koupil", "jsem", "si", "červené", "sportovní", "auto", "které", "mě", "stálo", "dost"],
-                            score: 0.4
-                        }])
+
                     }
                 })
             },
             name: 'Fake Local',
         }
     }
+
+    //     resolve([
+    //         ["Koupil", "Koupila"],
+    //         ["jsem", "si"],
+    //         ["si"], // change
+    //         ["červené", "červený", "červenou"],
+    //         ["sportovní"],
+    //         ["auto", "vůz", "sporťák"],
+    //         ["které", "který", "což"],
+    //         ["mě", "mně"],
+    //         ["stálo", "stojí"],
+    //         ["hodně", "dost"]
+    //     ])
+    // } else if (TMP_FAKE_COUNTER == 1) {
+    //     resolve([
+    //         ["Koupil", "Koupila"],
+    //         ["jsem", "si"],
+    //         // ["si"], // change
+    //         ["červené", "červený", "červenou"],
+    //         ["sportovní"],
+    //         ["sporťák"],
+    //         ["které", "který", "což"],
+    //         ["mě", "mně"],
+    //         ["stál", "stojí"],
+    //         ["hodně", "dost"]
+    //     ])
+    // } else if (TMP_FAKE_COUNTER == 2) {
+    //     resolve([
+    //         ["Koupil", "Koupila"],
+    //         ["jsem", "si"],
+    //         // ["si"], // change
+    //         ["červené", "červený", "červenou"],
+    //         // ["sportovní"],
+    //         ["sporťák"],
+    //         ["který", "kterého", "což"], // change
+    //         ["mě", "mně"],
+    //         ["stál", "stojí"],
+    //         ["hodně", "dost"]
+    //     ])
+    // } else if (TMP_FAKE_COUNTER == 3) {
+    //     resolve([
+    //         ["Koupil", "Koupila"],
+    //         ["jsem", "si"],
+    //         // ["si"], // change
+    //         ["červené", "červený", "červenou"],
+    //         // ["sportovní"],
+    //         ["sporťák"],
+    //         ["který", "kterého", "což"], // change
+    //         ["mě", "mně"],
+    //         ["stál", "stojí"],
+    //         ["dost"] // change
+    //     ])
 
     public translate = () => {
         bread_manager.lock(true)
